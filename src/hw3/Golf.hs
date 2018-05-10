@@ -18,11 +18,11 @@ localMaxima (x:y:z:xs)
   | otherwise = localMaxima (y:z:xs)
 localMaxima _ = []
 
-histogram :: [Integer] -> [String]
-histogram x = generateString (generateList x)
+histogram :: [Integer] -> String
+histogram x = concat $ generateString $ generateList x
 
 generateString :: [Integer] -> [String]
-generateString x = [generateRowString x (maximum x) y | y <- [1..(maximum x)]] ++ (replicate 10 "=")
+generateString x = [generateRowString x (maximum x) y | y <- [1..(maximum x)]] ++ (replicate 10 "=") ++ ["\n0123456789"]
 
 generateRowString :: [Integer] -> Integer -> Integer -> String
 generateRowString (x:xs) max y
@@ -31,7 +31,7 @@ generateRowString (x:xs) max y
 generateRowString _ _ _ = "\n"
 
 generateList :: [Integer] -> [Integer]
-generateList x = [count x y | y <- [1..10]]
+generateList x = [count x y | y <- [0..9]]
 
 count :: [Integer] -> Integer -> Integer
 count [] _ = 0
