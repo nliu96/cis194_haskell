@@ -1,7 +1,8 @@
 module Golf
 (
   skips,
-  localMaxima
+  localMaxima,
+  histogram
 ) where
 
 skips :: [a] -> [[a]]
@@ -16,3 +17,24 @@ localMaxima (x:y:z:xs)
   | x < y && y > z = y : localMaxima (y:z:xs)
   | otherwise = localMaxima (y:z:xs)
 localMaxima _ = []
+
+histogram :: [Integer] -> [String]
+histogram x = generateString (generateList x)
+
+generateString :: [Integer] -> [String]
+generateString x = [generateRowString x (maximum x) y | y <- [1..(maximum x)]] ++ (replicate 10 "=")
+
+generateRowString :: [Integer] -> Integer -> Integer -> String
+generateRowString (x:xs) max y
+  | max - x < y = "*" ++ (generateRowString xs max y)
+  | otherwise = " " ++ generateRowString xs max y
+generateRowString _ _ _ = "\n"
+
+generateList :: [Integer] -> [Integer]
+generateList x = [count x y | y <- [1..10]]
+
+count :: [Integer] -> Integer -> Integer
+count [] _ = 0
+count (x:xs) y
+  | x == y = 1 + count xs y
+  | otherwise = count xs y
